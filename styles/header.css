@@ -1,0 +1,12 @@
+.nav-style {
+    border-bottom: 1px solid #dbdbdb;
+    padding: 6.5px;
+}
+
+.card-header {
+    background-color: white!important;
+}
+
+.logo:active {
+    opacity: 0.4;
+}

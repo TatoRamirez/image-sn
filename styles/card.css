@@ -1,0 +1,47 @@
+.username {
+  color: black;
+  font-size: medium;
+}
+
+.username:hover {
+  color: black;
+}
+
+.username:active {
+  opacity: 0.4;
+}
+
+.corazon-span {
+  display: inline-block;
+  margin-left: -8px;
+}
+
+.corazon-button {
+  background: 0 0;
+  border: 0;
+  cursor: pointer;
+  justify-content: center;
+  padding: 8px;
+}
+
+.corazon-red {
+  color: #dc3545 !important;
+}
+
+.bookmark-span {
+  margin-left: auto;
+  margin-right: -10px;
+  display: inline-block;
+}
+
+.bookmark-button {
+  background: 0 0;
+  border: 0;
+  cursor: pointer;
+  justify-content: center;
+  padding: 8px;
+}
+
+.tags {
+  color: #00376b;
+}
