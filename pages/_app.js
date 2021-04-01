@@ -8,6 +8,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "../styles/global.css";
 import "../styles/header.css";
 import "../styles/card.css";
+import "../styles/perfil.css";
+import "../styles/Loading.css";
 
 function MyApp({ Component, pageProps }) {
   const [photos, setPhotos] = useState([]);

@@ -10,7 +10,7 @@ const card = (props) => {
       <div className="card-header">
         <div className="row">
           <div className="col-12 p-0 pl-2 font-weight-bold">
-            <a href={`/user/${photo.userId}`}>
+            <a href={`${process.env.NEXT_PUBLIC_PATH_DIR}user/${photo.userId}`}>
               <img
                 src={photo.authorLogo}
                 alt=""
@@ -20,7 +20,7 @@ const card = (props) => {
               />
             </a>
             <a
-              href={`/user/${photo.userId}`}
+              href={`${process.env.NEXT_PUBLIC_PATH_DIR}user/${photo.userId}`}
               className="align-middle ml-3 username"
             >
               {photo.author}
@@ -64,7 +64,7 @@ const card = (props) => {
                   </svg>
                 ) : (
                   <img
-                    src="images/icons/heart.svg"
+                    src={`${process.env.NEXT_PUBLIC_PATH_DIR}images/icons/heart.svg`}
                     alt="Me gusta"
                     height="24"
                     width="24"
@@ -89,14 +89,14 @@ const card = (props) => {
               >
                 {photo.bookmarked ? (
                   <img
-                    src="images/icons/bookmark-fill.svg"
+                    src={`${process.env.NEXT_PUBLIC_PATH_DIR}images/icons/bookmark-fill.svg`}
                     alt="No guardar"
                     height="24"
                     width="24"
                   />
                 ) : (
                   <img
-                    src="images/icons/bookmark.svg"
+                    src={`${process.env.NEXT_PUBLIC_PATH_DIR}images/icons/bookmark.svg`}
                     alt="Guardar"
                     height="24"
                     width="24"
@@ -108,7 +108,7 @@ const card = (props) => {
         </div>
         <p className="card-title font-weight-bold">{photo.likes} Me gusta</p>
         <p className="card-title font-weight-bolder">
-          <a className="username" href={`/user/${photo.userId}`}>
+          <a className="username" href={`${process.env.NEXT_PUBLIC_PATH_DIR}user/${photo.userId}`}>
             {photo.author}
           </a>
           {/* <span className="font-weight-normal"> {photo.location}</span> */}
