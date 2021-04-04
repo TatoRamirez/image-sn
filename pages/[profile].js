@@ -1,48 +1,75 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { useMutation, useQuery, gql } from "@apollo/client";
-import moment from "moment";
+import { useRouter } from "next/router";
+import { useQuery, gql } from "@apollo/client";
 
 //importar Componentes
-import Loading from "../../components/Loading";
+import Loading from "../components/Loading";
 
-const VER_POSTUSUARIO = gql`
-  query verPostUsuario {
+const VER_USUARIO_AND_POSTUSUARIO = gql`
+  query verPostUsuario($input: UserInput) {
     allUserPost {
       id
       iduser
+      posts {
+        id
+        image
+        description
+        likes
+        createdate
+        modifieddate
+      }
+    }
+    getUser(input: $input) {
+      id
+      user
       image
-      description
-      likes
-      createdate
-      modifieddate
+      name
+      lastname
+      userdesc
     }
   }
 `;
 
-const UserPage = () => {
-  //Leer info de la base
-  const { loading, error, data } = useQuery(VER_POSTUSUARIO);
-
+const Profile = () => {
   //Router
   const router = useRouter();
 
-  /* const id = router.query.id; */
-  const [bookmarked, setBookmarked] = useState(false);
-  /*   const userPhotos = props.data.filter(
-    (item) => String(item.userId) === String(id)
-  ); */
+  const profile = router.query.profile;
 
-  /*  if (props.data && props.data.length && !userPhotos) {
-    router.push("/");
-  } */
+  //Leer info de la base
+  const { loading, error, data } = useQuery(
+    VER_USUARIO_AND_POSTUSUARIO,
+    {
+      variables: {
+        input: {
+          user: profile,
+        },
+      },
+    }
+  );
+
+  const [bookmarked, setBookmarked] = useState(false);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <div className="noti-contenedor animate__animated animate__headShake mt-5">
+        <div className={`noti-error noti-popup`}>
+          <h2 className="noti-titulo">Error!</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="row text-black">
         <div className="col-3 d-flex justify-content-center">
           <img
-            src="" /* {data.image} */ /* {userPhotos[0].authorLogo} */
+            src={data && data.getUser && data.getUser.image}
             alt="Perfil"
             height="150"
             width="150"
@@ -53,7 +80,7 @@ const UserPage = () => {
           <div className="row d-flex justify-content-start">
             <div className="col-6 col-lg-4 d-flex align-items-center">
               <h3 className="font-weight-normal">
-                {/* {userPhotos[0].author} */}
+                {data && data.getUser && data.getUser.user}
               </h3>
             </div>
             <div className="col-6 col-lg-2 d-flex align-items-center">
@@ -84,7 +111,10 @@ const UserPage = () => {
             <div className="col-12 d-flex align-items-center">
               <span>
                 <span className="font-weight-bolder">
-                  {/* {userPhotos.length} */}
+                  {data &&
+                    data.allUserPost[0] &&
+                    data.allUserPost[0].posts &&
+                    data.allUserPost[0].posts.length}
                 </span>{" "}
                 Publicaciones
               </span>
@@ -92,21 +122,28 @@ const UserPage = () => {
           </div>
           <div className="row d-flex justify-content-start mt-3">
             <div className="col-12 d-flex align-items-center">
-              <p>{/* {userPhotos[0].authorDesc} */}</p>
+              <p>{data && data.getUser && data.getUser.userdesc}</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="p-5">
+      <div className="p-4">
         <hr className="text-black" />
       </div>
       <div className="row row-cols-3">
-        {/* {userPhotos.map((photo) => (
-            <img className="foto-espacio photoinfo" src={photo.photo} />
-          ))} */}
+        {data &&
+          data.allUserPost[0] &&
+          data.allUserPost[0].posts &&
+          data.allUserPost[0].posts.map((item) => (
+            <img
+              className="foto-espacio photoinfo"
+              src={item.image}
+              key={item.id}
+            />
+          ))}
       </div>
     </>
   );
 };
 
-export default UserPage;
+export default Profile;

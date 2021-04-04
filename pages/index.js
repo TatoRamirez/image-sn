@@ -1,7 +1,7 @@
 import Head from "next/head";
 
 //importar Componentes
-import Card from "../components/body/card";
+import Card from "../components/card";
 
 export default function Home(props) {
   return (
