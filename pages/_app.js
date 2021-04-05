@@ -12,6 +12,7 @@ import "../styles/header.css";
 import "../styles/card.css";
 import "../styles/perfil.css";
 import "../styles/Loading.css";
+import "../styles/Error.css";
 
 function MyApp({ Component, pageProps }) {
   const [clt, handleclt] = useState(false);

@@ -1,0 +1,26 @@
+.diverror-main {
+  padding: 22px 40px 40px 40px;
+  justify-content: center;
+  align-content: stretch;
+  position: relative;
+}
+
+.h2error {
+  text-align: center;
+  display: block;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 26px;
+  margin: -4px 0 -5px;
+}
+
+.diverror {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.diverror2 {
+  display: block;
+  text-align: center;
+}
