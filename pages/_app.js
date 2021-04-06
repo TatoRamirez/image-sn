@@ -2,17 +2,17 @@ import { React, useEffect, useState, useLayoutEffect } from "react";
 import { ApolloProvider } from "@apollo/client";
 import clientDeft from "../config/apollo";
 
-//importar Componentes
-import Header from "../components/header";
-
 //importar CSS
 import "bootstrap/dist/css/bootstrap.css";
+import "rodal/lib/rodal.css";
 import "../styles/global.css";
 import "../styles/header.css";
 import "../styles/card.css";
 import "../styles/perfil.css";
 import "../styles/Loading.css";
 import "../styles/Error.css";
+import "../styles/modal.css";
+import "../styles/login.css";
 
 function MyApp({ Component, pageProps }) {
   const [clt, handleclt] = useState(false);
@@ -39,8 +39,6 @@ function MyApp({ Component, pageProps }) {
     <>
       {loading && (
         <ApolloProvider client={clientDeft}>
-          <Header />
-          <br />
           <div className="menu-padding container-md mt-5 p-0">
             <Component {...clientDeft} />
           </div>

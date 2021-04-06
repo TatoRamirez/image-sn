@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useQuery, gql } from "@apollo/client";
+import { useMutation, useQuery, gql } from "@apollo/client";
+import jwt from "jsonwebtoken";
 import Head from "next/head";
+import Rodal from "rodal";
 
 //importar Componentes
 import Loading from "../components/Loading";
@@ -41,10 +43,31 @@ const VER_USUARIO_AND_POSTUSUARIO = gql`
         follower_iduser
       }
     }
+    getMyFollowers {
+      follows {
+        follow_iduser
+      }
+    }
+  }
+`;
+
+const DAR_FOLLOW = gql`
+  mutation newFollow($input: FollowsInput) {
+    newFollow(input: $input)
+  }
+`;
+
+const QUITAR_FOLLOW = gql`
+  mutation deleteFollow($input: FollowsInput) {
+    deleteFollow(input: $input)
   }
 `;
 
 const profile = () => {
+  /* Decodificar token */
+  const token = localStorage.getItem("token");
+  const decoded = jwt.decode(token);
+
   //Router
   const router = useRouter();
 
@@ -59,7 +82,63 @@ const profile = () => {
     },
   });
 
-  const [bookmarked, setBookmarked] = useState(false);
+  const [newFollow] = useMutation(DAR_FOLLOW);
+
+  const [deleteFollow] = useMutation(QUITAR_FOLLOW);
+
+  let idusuario = data && data.getUser && data.getUser.id;
+  let usuario = data && data.getUser && data.getUser.user;
+  let nombre = data && data.getUser && data.getUser.name;
+  let apellido = data && data.getUser && data.getUser.lastname;
+
+  const isFollow =
+    data &&
+    data.getMyFollowers[0] &&
+    data.getMyFollowers[0].follows &&
+    data.getMyFollowers[0].follows.filter(
+      (item) => item.follow_iduser === idusuario
+    );
+
+  //Función para dar follow al usuario
+  const DarFollow = async (data) => {
+    try {
+      const {} = await newFollow({
+        variables: {
+          input: {
+            iduser: data,
+          },
+        },
+      });
+      location.reload();
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  //Función para dar quitar follow al usuario
+  const QuitarFollow = async (data) => {
+    try {
+      const {} = await deleteFollow({
+        variables: {
+          input: {
+            iduser: data,
+          },
+        },
+      });
+      location.reload();
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  //Llamando para abrir y cerrar modal
+  const [showmodal, handleshowmodal] = useState(false);
+  const show = () => {
+    handleshowmodal(true);
+  };
+  const hide = () => {
+    handleshowmodal(false);
+  };
 
   if (loading) {
     return <Loading />;
@@ -74,10 +153,32 @@ const profile = () => {
       {data && data.getUser !== null ? (
         <>
           <Head>
-            <title>{`${data && data.getUser && data.getUser.name} ${
-              data && data.getUser && data.getUser.lastname
-            } (@${data && data.getUser && data.getUser.user})`}</title>
+            <title>{`${nombre} ${apellido} (@${usuario})`}</title>
           </Head>
+          <Rodal visible={showmodal} onClose={hide}>
+            <div className="rodalcontainer">
+              <div className="row no-gutters">
+                <div className="col-12 d-flex justify-content-center mt-6 mb-1">
+                  <img
+                    src={data && data.getUser && data.getUser.image}
+                    alt="Perfil"
+                    height="90"
+                    width="90"
+                    className="rounded-circle border-primary"
+                  />
+                </div>
+                <div className="col-12 d-flex justify-content-center mt-4 FS14">
+                  <span>¿Dejar de seguir a @{usuario}?</span>
+                </div>
+                <div className="col-12 d-flex justify-content-center mt-4">
+                  <button className="botonmodal btnunfollow" onClick={() => QuitarFollow(idusuario)}>Dejar de seguir</button>
+                </div>
+                <div className="col-12 d-flex justify-content-center">
+                  <button className="botonmodal" onClick={hide}>Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </Rodal>
           <div className="row text-black">
             <div className="col-3 d-flex justify-content-center">
               <img
@@ -91,23 +192,25 @@ const profile = () => {
             <div className="col-9">
               <div className="row d-flex justify-content-start">
                 <div className="col-6 col-lg-4 d-flex align-items-center">
-                  <h3 className="font-weight-normal">
-                    {data && data.getUser && data.getUser.user}
-                  </h3>
+                  <h3 className="font-weight-normal">{usuario}</h3>
                 </div>
                 <div className="col-6 col-lg-2 d-flex align-items-center">
-                  {setBookmarked ? (
-                    <button
-                      className="followbutton"
-                      onClick={() => setBookmarked(true)}
-                    >
-                      Seguir
+                  {idusuario === decoded.id ? (
+                    <button className="unfollowbutton">
+                      <div className="unfollowicon">
+                        <span>
+                          <span>Editar Perfil</span>{" "}
+                          <img
+                            src={`${process.env.NEXT_PUBLIC_PATH_DIR}images/icons/gear-wide.svg`}
+                            alt="Editar Perfil"
+                            width="13"
+                            className="mt-n1"
+                          />
+                        </span>
+                      </div>
                     </button>
-                  ) : (
-                    <button
-                      className="unfollowbutton"
-                      onClick={() => setBookmarked(true)}
-                    >
+                  ) : isFollow && isFollow.length === 1 ? (
+                    <button className="unfollowbutton" onClick={show}>
                       <div className="unfollowicon">
                         <img
                           src={`${process.env.NEXT_PUBLIC_PATH_DIR}images/icons/person-check-fill.svg`}
@@ -115,6 +218,13 @@ const profile = () => {
                           width="24"
                         />
                       </div>
+                    </button>
+                  ) : (
+                    <button
+                      className="followbutton"
+                      onClick={() => DarFollow(idusuario)}
+                    >
+                      Seguir
                     </button>
                   )}
                 </div>
@@ -167,12 +277,8 @@ const profile = () => {
               <div className="row d-flex justify-content-center mt-3">
                 <div className="col-12 d-flex align-items-center">
                   <span>
-                    <span className="font-weight-bolder">
-                      {data && data.getUser && data.getUser.name}
-                    </span>{" "}
-                    <span className="font-weight-bolder">
-                      {data && data.getUser && data.getUser.lastname}
-                    </span>
+                    <span className="font-weight-bolder">{nombre}</span>{" "}
+                    <span className="font-weight-bolder">{apellido}</span>
                   </span>
                 </div>
               </div>
