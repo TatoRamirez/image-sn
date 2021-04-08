@@ -18,6 +18,26 @@
   justify-content: center;
 }
 
+.user-select {
+  border: 1px solid #262626;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.border-transparent {
+  border-color: transparent !important;
+}
+
+.optselect:active {
+  background-color: rgba(137, 137, 137, 0.25)!important;
+  color: #262626;
+}
+
+.optselect:hover {
+  background-color: rgba(137, 137, 137, 0.05)!important;
+}
+
 @-webkit-keyframes LoadingBarProgress {
   0% {
     background-position: 0% 0;

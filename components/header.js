@@ -7,8 +7,18 @@ const header = () => {
   const token = localStorage.getItem("token");
   const decoded = jwt.decode(token);
 
+  //Logout
+  const logOut = () => {
+    localStorage.removeItem("token");
+    router.push(`${process.env.NEXT_PUBLIC_PATH_DIR}`);
+  };
+
   //Router
   const router = useRouter();
+
+  const [showDropDown, setShow] = useState(false);
+
+  let classDropDown = showDropDown ? "show " : "border-transparent";
 
   return (
     <nav className="navbar navbar-dark bg-white fixed-top nav-style">
@@ -54,23 +64,59 @@ const header = () => {
               </button>
             </div>
             <div className="col-5">
-              <button
-                type="button"
-                className={`header-icon`}
-                onClick={() =>
+              <div className="dropdown">
+                <button
+                  type="button"
+                  className="header-icon"
+                  onFocus={() => setShow(true)}
+                  onBlur={() =>
+                    setTimeout(() => {
+                      setShow(false);
+                    }, 150)
+                  }
+                  /* onClick={() =>
                   router.push(
                     `${process.env.NEXT_PUBLIC_PATH_DIR}${decoded.user}`
                   )
-                }
-              >
-                <img
-                  src={decoded.image}
-                  alt="Perfil"
-                  height="24"
-                  width="24"
-                  className="rounded-circle border-primary"
-                />
-              </button>
+                } */
+                >
+                  <div className={`user-select ${classDropDown}`}>
+                    <img
+                      src={decoded && decoded.image}
+                      alt="Perfil"
+                      height="24"
+                      width="24"
+                      className="rounded-circle"
+                    />
+                  </div>
+                </button>
+                <ul class={`dropdown-menu p-0 ${classDropDown}`}>
+                  <li>
+                    <a
+                      class="dropdown-item p-1 pl-3 optselect"
+                      href={`${process.env.NEXT_PUBLIC_PATH_DIR}${decoded && decoded.user}`}
+                    >
+                      Perfil
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item p-1 pl-3 optselect"
+                      href={`${process.env.NEXT_PUBLIC_PATH_DIR}${decoded && decoded.user}`}
+                    >
+                      Configuración
+                    </a>
+                  </li>
+
+                  <hr class="dropdown-divider p-0 m-0" />
+
+                  <li>
+                    <a class="dropdown-item p-1 pl-3 optselect" href="" onClick={logOut}>
+                      Cerrar Sesión
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
