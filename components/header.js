@@ -90,28 +90,47 @@ const header = () => {
                     />
                   </div>
                 </button>
-                <ul class={`dropdown-menu p-0 ${classDropDown}`}>
+                <ul className={`dropdown-menu dd-menu p-0 ${classDropDown}`}>
+                  <div className="dd-menu-punta "></div>
                   <li>
                     <a
-                      class="dropdown-item p-1 pl-3 optselect"
-                      href={`${process.env.NEXT_PUBLIC_PATH_DIR}${decoded && decoded.user}`}
+                      className="dropdown-item p-1 pl-3 optselect"
+                      href={`${process.env.NEXT_PUBLIC_PATH_DIR}${
+                        decoded && decoded.user
+                      }`}
                     >
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_PATH_DIR}images/icons/person-circle.svg`}
+                        alt="Perfil"
+                        width="13"
+                        className="mr-2"
+                      />
                       Perfil
                     </a>
                   </li>
                   <li>
                     <a
-                      class="dropdown-item p-1 pl-3 optselect"
-                      href={`${process.env.NEXT_PUBLIC_PATH_DIR}${decoded && decoded.user}`}
+                      className="dropdown-item p-1 pl-3 optselect"
+                      href=""
                     >
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_PATH_DIR}images/icons/gear-wide.svg`}
+                        alt="Configuracion"
+                        width="13"
+                        className="mr-2"
+                      />
                       Configuración
                     </a>
                   </li>
 
-                  <hr class="dropdown-divider p-0 m-0" />
+                  <hr className="dropdown-divider p-0 m-0" />
 
-                  <li>
-                    <a class="dropdown-item p-1 pl-3 optselect" href="" onClick={logOut}>
+                  <li className="text-center">
+                    <a
+                      className="dropdown-item p-1 optselect"
+                      href=""
+                      onClick={logOut}
+                    >
                       Cerrar Sesión
                     </a>
                   </li>

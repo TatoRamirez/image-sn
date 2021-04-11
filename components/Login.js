@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
+import * as Yup from "yup";
 
 const AUTENTICAR_USUARIO = gql`
   mutation authUser($input: AuthUserInput) {
@@ -21,12 +21,6 @@ const Login = () => {
 
   //Mutation
   const [authUser] = useMutation(AUTENTICAR_USUARIO);
-
-  //Logout
-  const logOut = () => {
-    localStorage.removeItem("token");
-    router.push(`${process.env.NEXT_PUBLIC_PATH_DIR}`);
-  };
 
   const [showInputUser, setShowUser] = useState(false);
   const [showInputPass, setShowPass] = useState(false);
@@ -59,7 +53,7 @@ const Login = () => {
         handleMessage({
           msg: (
             <div
-              class="spinner-grow spinner-grow-sm text-secondary"
+              className="spinner-grow spinner-grow-sm text-secondary"
               role="status"
             />
           ),
@@ -119,7 +113,7 @@ const Login = () => {
                         Correo o Usuario
                       </span>
                       <input
-                        maxlength="75"
+                        maxLength="75"
                         type="text"
                         id="mail"
                         className="input-login"
@@ -127,7 +121,6 @@ const Login = () => {
                         onKeyDown={() => setShowUser(true)}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        autoComplete="mail"
                       />
                     </label>
                   </div>
@@ -186,7 +179,7 @@ const Login = () => {
                   <p>{formik.errors.pass}</p>
                 </div>
               ) : null}
-              <a className="a-fogetpass" href="#" tabindex="0">
+              <a className="a-fogetpass" href="#" tabIndex="0">
                 ¿Olvidaste tu contraseña?
               </a>
             </form>
@@ -196,7 +189,11 @@ const Login = () => {
           <div className="div-login-6">
             <p className="p-login">
               ¿No tienes una cuenta?{" "}
-              <a href="#" tabindex="0" className="a-register">
+              <a
+                href={`${process.env.NEXT_PUBLIC_PATH_DIR}signup`}
+                tabIndex="0"
+                className="a-register"
+              >
                 Regístrate
               </a>
             </p>

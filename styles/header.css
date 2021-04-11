@@ -18,6 +18,27 @@
   justify-content: center;
 }
 
+.dd-menu {
+  top: 130%;
+  border: none !important;
+  box-shadow: 0 0 5px 1px rgb(0 0 0 / 10%);
+}
+
+.dd-menu-punta {
+  bottom: 0;
+  top: -6px;
+  left: 14px;
+  background: #fff;
+  border: 1px solid #fff;
+  bottom: -6px;
+  height: 14px;
+  position: absolute;
+
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  width: 14px;
+}
+
 .user-select {
   border: 1px solid #262626;
   border-radius: 50%;
@@ -30,12 +51,12 @@
 }
 
 .optselect:active {
-  background-color: rgba(137, 137, 137, 0.25)!important;
+  background-color: rgba(137, 137, 137, 0.25) !important;
   color: #262626;
 }
 
 .optselect:hover {
-  background-color: rgba(137, 137, 137, 0.05)!important;
+  background-color: rgba(137, 137, 137, 0.05) !important;
 }
 
 @-webkit-keyframes LoadingBarProgress {

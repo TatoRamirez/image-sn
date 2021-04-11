@@ -13,6 +13,7 @@ import "../styles/Loading.css";
 import "../styles/Error.css";
 import "../styles/modal.css";
 import "../styles/login.css";
+import "../styles/signup.css";
 
 function MyApp({ Component, pageProps }) {
   const [clt, handleclt] = useState(false);

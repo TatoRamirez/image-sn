@@ -164,7 +164,7 @@ const profile = () => {
                     alt="Perfil"
                     height="90"
                     width="90"
-                    className="rounded-circle border-primary"
+                    className="rounded-circle"
                   />
                 </div>
                 <div className="col-12 d-flex justify-content-center mt-4 FS14">
@@ -186,13 +186,13 @@ const profile = () => {
                 alt="Perfil"
                 height="150"
                 width="150"
-                className="rounded-circle border-primary"
+                className="rounded-circle"
               />
             </div>
             <div className="col-9">
               <div className="row d-flex justify-content-start">
                 <div className="col-6 col-lg-4 d-flex align-items-center">
-                  <h3 className="font-weight-normal">{usuario}</h3>
+                  <h3 className="font-weight-light">{usuario}</h3>
                 </div>
                 <div className="col-6 col-lg-2 d-flex align-items-center">
                   {idusuario === decoded.id ? (
