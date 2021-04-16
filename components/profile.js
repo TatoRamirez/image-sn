@@ -196,7 +196,7 @@ const profile = () => {
                 </div>
                 <div className="col-6 col-lg-2 d-flex align-items-center">
                   {idusuario === decoded.id ? (
-                    <button className="unfollowbutton">
+                    <a className="unfollowbutton" href={`${process.env.NEXT_PUBLIC_PATH_DIR}account/edit/profile`}>
                       <div className="unfollowicon">
                         <span>
                           <span>Editar Perfil</span>{" "}
@@ -208,7 +208,7 @@ const profile = () => {
                           />
                         </span>
                       </div>
-                    </button>
+                    </a>
                   ) : isFollow && isFollow.length === 1 ? (
                     <button className="unfollowbutton" onClick={show}>
                       <div className="unfollowicon">

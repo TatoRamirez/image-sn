@@ -1,0 +1,113 @@
+.div-principal {
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  margin: 60px auto 0;
+  max-width: 935px;
+  overflow: hidden;
+  width: 100%;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: stretch;
+}
+
+.div-foto-1 {
+  height: 38px;
+  width: 38px;
+}
+
+.div-foto-2 {
+  background-color: #fafafa;
+  border-radius: 50%;
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.button-foto {
+  border: 0;
+  cursor: pointer;
+  height: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+.button-img {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.div-usuario {
+  font-size: 20px;
+  line-height: 22px;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 400;
+}
+
+.button-profile {
+  font-weight: 600;
+  background-color: transparent;
+  text-align: left;
+  border: 0;
+  color: #0095f6;
+  display: inline;
+  padding: 0;
+  position: relative;
+}
+
+@media (min-width: 736px) {
+  .label-campo {
+    padding-left: 32px;
+    padding-right: 32px;
+    text-align: right;
+  }
+}
+.label-campo {
+  box-sizing: border-box;
+  color: #262626;
+  flex: 0 0 194px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 18px;
+  margin-top: 6px;
+}
+
+.campo-editprofile {
+  width: 100%;
+  max-width: 355px;
+  background: 0 0;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #262626;
+  flex: 0 1 355px;
+  font-size: 16px;
+  height: 32px;
+  padding: 0 10px;
+  width: 100%;
+}
+
+.h2-info {
+  color: #8e8e8e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.enviar-button {
+  border: 1px solid transparent;
+  background-color: #0095f6;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  padding: 5px 9px;
+  text-align: center;
+}

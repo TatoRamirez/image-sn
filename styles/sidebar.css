@@ -1,0 +1,16 @@
+.sidebar-principal {
+  border-right: 1px solid #dbdbdb;
+}
+
+.menu-pestaña {
+  border-style: none;
+  color: gray;
+  padding-left: 2rem;
+}
+
+.active {
+  background-color: transparent !important;
+  color: #000 !important;
+  border-left: 2px solid #262626 !important;
+  font-weight: 600;
+}

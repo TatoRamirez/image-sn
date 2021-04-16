@@ -7,14 +7,14 @@ const header = () => {
   const token = localStorage.getItem("token");
   const decoded = jwt.decode(token);
 
+  //Router
+  const router = useRouter();
+
   //Logout
   const logOut = () => {
     localStorage.removeItem("token");
     router.push(`${process.env.NEXT_PUBLIC_PATH_DIR}`);
   };
-
-  //Router
-  const router = useRouter();
 
   const [showDropDown, setShow] = useState(false);
 
@@ -111,7 +111,7 @@ const header = () => {
                   <li>
                     <a
                       className="dropdown-item p-1 pl-3 optselect"
-                      href=""
+                      href={`${process.env.NEXT_PUBLIC_PATH_DIR}account/edit/profile`}
                     >
                       <img
                         src={`${process.env.NEXT_PUBLIC_PATH_DIR}images/icons/gear-wide.svg`}

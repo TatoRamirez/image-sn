@@ -14,6 +14,8 @@ import "../styles/Error.css";
 import "../styles/modal.css";
 import "../styles/login.css";
 import "../styles/signup.css";
+import "../styles/editprofile.css";
+import "../styles/sidebar.css";
 
 function MyApp({ Component, pageProps }) {
   const [clt, handleclt] = useState(false);
