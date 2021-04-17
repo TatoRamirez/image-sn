@@ -6,20 +6,12 @@ import * as Yup from "yup";
 import jwt from "jsonwebtoken";
 import Head from "next/head";
 import Rodal from "rodal";
+import { countries } from "../components/Paises";
 
 const ACTUALIZAR_USUARIO = gql`
   mutation updateUser($input: UserInput) {
     updateUser(input: $input) {
-      user
-      image
-      name
-      lastname
-      userdesc
-      genre
-      personalemail
-      phone
-      nationality
-      modifieddate
+      token
     }
   }
 `;
@@ -54,7 +46,6 @@ const EditProfile = () => {
 
   const formik = useFormik({
     initialValues: {
-      imagen: `${decoded.image ? decoded.image : "/default/user.png"}`,
       nombre: `${decoded.name ? decoded.name : ""}`,
       apellido: `${decoded.lastname ? decoded.lastname : ""}`,
       usuario: `${decoded.user ? decoded.user : ""}`,
@@ -63,18 +54,14 @@ const EditProfile = () => {
       telefono: `${decoded.phone ? decoded.phone : ""}`,
       genero: `${decoded.genre ? decoded.genre : ""}`,
       nacionalidad: `${decoded.nationality ? decoded.nationality : ""}`,
-      cumpleaños: `${decoded.birthdate ? decoded.birthdate : ""}`,
-      contra: "",
+      cumpleaños: `${
+        decoded.birthdate
+          ? new Date(
+              decoded.birthdate.replace(/-/g, "/").replace(/T.+/, "")
+            ).toLocaleDateString("sv-SE")
+          : ""
+      }`,
     },
-    /* validationSchema: Yup.object({
-      nombre: Yup.string().required("Ingresa tu nombre"),
-      apellido: Yup.string().required("Ingresa tu apellido"),
-      usuario: Yup.string().required("Ingresa tu usuario"),
-      correo: Yup.string()
-        .email("Ingresa un correo válido")
-        .required("Ingresa tu correo"),
-      contra: Yup.string().required("Ingresa tu contraseña"),
-    }), */
     onSubmit: async (values, { setErrors }) => {
       handleMessage({
         msg: (
@@ -86,7 +73,6 @@ const EditProfile = () => {
         type: "success",
       });
       const {
-        imagen,
         nombre,
         apellido,
         usuario,
@@ -96,13 +82,11 @@ const EditProfile = () => {
         genero,
         nacionalidad,
         cumpleaños,
-        contra,
       } = values;
       try {
         const { data } = await updateUser({
           variables: {
             input: {
-              image: imagen,
               name: nombre,
               lastname: apellido,
               user: usuario,
@@ -112,7 +96,60 @@ const EditProfile = () => {
               genre: genero,
               nationality: nacionalidad,
               birthdate: cumpleaños,
-              password: contra,
+            },
+          },
+        });
+        //Refresca el token con los nuevos datos
+        const { token } = data.updateUser;
+        localStorage.setItem("token", token);
+        handleMessage({
+          msg: (
+            <div
+              className="spinner-grow spinner-grow-sm text-success"
+              role="status"
+            />
+          ),
+          type: "success",
+        });
+        setTimeout(() => {
+          router.push(
+            `${process.env.NEXT_PUBLIC_PATH_DIR}account/edit/profile`
+          );
+          setErrors({});
+          handleMessage(null);
+        }, 2000);
+      } catch (error) {
+        handleMessage({
+          msg: error.message,
+          type: "error",
+        });
+        setTimeout(() => {
+          handleMessage(null);
+        }, 2000);
+      }
+    },
+  });
+
+  const formikImage = useFormik({
+    initialValues: {
+      imagen: `${decoded.image ? decoded.image : "/default/user.png"}`,
+    },
+    onSubmit: async (values, { setErrors }) => {
+      handleMessage({
+        msg: (
+          <div
+            className="spinner-grow spinner-grow-sm text-secondary"
+            role="status"
+          />
+        ),
+        type: "success",
+      });
+      const { imagen } = values;
+      try {
+        const { data } = await updateUser({
+          variables: {
+            input: {
+              image: imagen,
             },
           },
         });
@@ -191,36 +228,42 @@ const EditProfile = () => {
         </div>
 
         <article className="col-12 col-lg-9">
-          <div className="row mt-4">
-            <div className="col-12 col-lg-12 d-flex justify-content-center align-items-center">
-              <div className="col-1 d-flex justify-content-center p-0">
-                <div className="div-foto-1">
-                  <div className="div-foto-2">
-                    <button
-                      className="button-foto"
-                      title="Cambiar foto del perfil"
-                      onClick={show}
-                    >
-                      <img
-                        alt="Cambiar foto del perfil"
-                        className="button-img"
-                        src={decoded.image}
-                      />
-                    </button>
+          <form onSubmit={formikImage.handleSubmit}>
+            <div className="row mt-4">
+              <div className="col-12 col-lg-12 d-flex justify-content-center align-items-center">
+                <div className="col-1 d-flex justify-content-center p-0">
+                  <div className="div-foto-1">
+                    <div className="div-foto-2">
+                      <button
+                        className="button-foto"
+                        title="Cambiar foto del perfil"
+                        onClick={show}
+                      >
+                        <img
+                          alt="Cambiar foto del perfil"
+                          className="button-img"
+                          src={decoded.image}
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="col-4">
-                <h1 className="div-usuario" title="t4toramir3z">
-                  {decoded.user}
-                </h1>
-                <button className="button-profile" type="button" onClick={show}>
-                  Cambiar foto del perfil
-                </button>
+                <div className="col-4">
+                  <h1 className="div-usuario" title="t4toramir3z">
+                    {decoded.user}
+                  </h1>
+                  <button
+                    className="button-profile"
+                    type="button"
+                    onClick={show}
+                  >
+                    Cambiar foto del perfil
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
 
           <form className="mt-3" onSubmit={formik.handleSubmit}>
             <div className="row d-flex justify-content-start">
@@ -368,15 +411,17 @@ const EditProfile = () => {
                     <label htmlFor="nacionalidad">Nacionalidad</label>
                   </div>
                   <div className="col-6">
-                    <input
-                      placeholder="Nacionalidad"
-                      type="text"
+                    <select
                       id="nacionalidad"
                       className="campo-editprofile"
                       value={formik.values.nacionalidad}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                    />
+                    >
+                      {countries.map((data) => {
+                        return <option key={data.id}>{data.name}</option>;
+                      })}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -388,11 +433,10 @@ const EditProfile = () => {
                   </div>
                   <div className="col-6">
                     <input
-                      placeholder="Cumpleaños"
-                      type="text"
+                      type="date"
                       id="cumpleaños"
                       className="campo-editprofile"
-                      value={formik.values.birthdate}
+                      value={formik.values.cumpleaños}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     />
@@ -404,6 +448,8 @@ const EditProfile = () => {
             <div className="row d-flex justify-content-center m-4">
               <input type="submit" className="enviar-button" />
             </div>
+
+            {message && message.msg && mostrarMensaje()}
           </form>
         </article>
       </div>
